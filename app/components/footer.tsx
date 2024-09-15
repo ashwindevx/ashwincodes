@@ -6,6 +6,15 @@ export default function Footer() {
       <ul className="flex flex-row text-neutral-500 space-x-4">
         <li>
           <Link
+            key="home"
+            href="/"
+            className="text-neutral-900 underline underline-offset-4 decoration-neutral-200"
+          >
+            home
+          </Link>
+        </li>
+        <li>
+          <Link
             key="blog"
             href="/blog"
             className="text-neutral-900 underline underline-offset-4 decoration-neutral-200"
@@ -18,7 +27,7 @@ export default function Footer() {
             className="text-neutral-900 underline underline-offset-4 decoration-neutral-200"
             rel="noopener noreferrer"
             target="_blank"
-            href="https://github.com/vercel/next.js"
+            href="https://github.com/ashwindevx"
           >
             github
           </a>
