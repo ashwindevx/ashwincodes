@@ -1,21 +1,34 @@
-import { BlogPosts } from 'app/components/posts'
+import { BlogPosts } from "app/components/posts";
 
 export default function Page() {
   return (
     <section>
-      <h1 className="mb-8 text-2xl font-semibold tracking-tighter">
-        My Portfolio
-      </h1>
-      <p className="mb-4">
-        {`I'm a Vim enthusiast and tab advocate, finding unmatched efficiency in
-        Vim's keystroke commands and tabs' flexibility for personal viewing
-        preferences. This extends to my support for static typing, where its
-        early error detection ensures cleaner code, and my preference for dark
-        mode, which eases long coding sessions by reducing eye strain.`}
+      <p className="leading-5 text-neutral-700 font-bold mb-4">
+        ashwin chauhan
       </p>
-      <div className="my-8">
-        <BlogPosts />
-      </div>
+      <p className="mb-4 text-neutral-500">{`frontend engineer based in Bengaluru, India.`}</p>
+      <p className="mb-4 text-neutral-500">
+        {`currently i work at `}
+        <a
+          href="https://paywithatoa.co.uk/"
+          target="_blank"
+          className="text-neutral-900 underline underline-offset-4 decoration-neutral-200"
+        >
+          {`Atoa`}
+        </a>
+        .
+      </p>
+      <p className="mb-4 text-neutral-500">
+        {`previously i worked at `}
+        <a
+          href="https://www.navgurukul.org/"
+          target="_blank"
+          className="text-neutral-900 underline underline-offset-4 decoration-neutral-200"
+        >
+          {`NavGurukul`}
+        </a>
+        .
+      </p>
     </section>
-  )
+  );
 }

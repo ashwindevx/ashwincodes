@@ -1,61 +1,49 @@
-function ArrowIcon() {
-  return (
-    <svg
-      width="12"
-      height="12"
-      viewBox="0 0 12 12"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M2.07102 11.3494L0.963068 10.2415L9.2017 1.98864H2.83807L2.85227 0.454545H11.8438V9.46023H10.2955L10.3097 3.09659L2.07102 11.3494Z"
-        fill="currentColor"
-      />
-    </svg>
-  )
-}
+import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="mb-16">
-      <ul className="font-sm mt-8 flex flex-col space-x-0 space-y-2 text-neutral-600 md:flex-row md:space-x-4 md:space-y-0 dark:text-neutral-300">
+    <footer className="my-16">
+      <ul className="flex flex-row text-neutral-500 space-x-4">
         <li>
-          <a
-            className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
-            rel="noopener noreferrer"
-            target="_blank"
-            href="/rss"
+          <Link
+            key="blog"
+            href="/blog"
+            className="text-neutral-900 underline underline-offset-4 decoration-neutral-200"
           >
-            <ArrowIcon />
-            <p className="ml-2 h-7">rss</p>
-          </a>
+            blog
+          </Link>
         </li>
         <li>
           <a
-            className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
+            className="text-neutral-900 underline underline-offset-4 decoration-neutral-200"
             rel="noopener noreferrer"
             target="_blank"
             href="https://github.com/vercel/next.js"
           >
-            <ArrowIcon />
-            <p className="ml-2 h-7">github</p>
+            github
           </a>
         </li>
         <li>
           <a
-            className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
+            className="text-neutral-900 underline underline-offset-4 decoration-neutral-200"
             rel="noopener noreferrer"
             target="_blank"
-            href="https://vercel.com/templates/next.js/portfolio-starter-kit"
+            href="https://www.linkedin.com/in/ashwin-chauhan-81b137147/"
           >
-            <ArrowIcon />
-            <p className="ml-2 h-7">view source</p>
+            linkedin
+          </a>
+        </li>
+        <li>
+          <a
+            className="text-neutral-900 underline underline-offset-4 decoration-neutral-200"
+            rel="noopener noreferrer"
+            target="_blank"
+            href="/rss"
+          >
+            rss
           </a>
         </li>
       </ul>
-      <p className="mt-8 text-neutral-600 dark:text-neutral-300">
-        © {new Date().getFullYear()} MIT Licensed
-      </p>
     </footer>
-  )
+  );
 }
