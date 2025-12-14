@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Writing by Ashwin Chauhan">
+  <meta name="author" content="Ashwin Chauhan">
+  <title>Writing — Ashwin Chauhan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Prevent flash: set theme before page renders
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-row">
+        <a href="/" class="site-title">ashwin chauhan</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">dark</button>
+      </div>
+      <nav class="nav">
+        <a href="index.html#about">about</a>
+        <a href="index.html#bookshelf">bookshelf</a>
+        <a href="index.html#movies">movies</a>
+        <a href="index.html#series">series</a>
+        <!-- <a href="writing.html">writing</a> -->
+      </nav>
+    </header>
+
+    <main>
+      <section class="section">
+        <h2 class="section-title">Writing</h2>
+        <p class="empty-state">Coming soon...</p>
+        
+        <!--
+          To add a new writing entry, use this pattern:
+          
+          <article class="writing-entry">
+            <h3 class="writing-title">
+              <a href="link-to-post.html">Post Title</a>
+            </h3>
+            <time class="writing-date">2024</time>
+          </article>
+        -->
+      </section>
+    </main>
+
+    <footer class="footer">
+      <nav class="footer-nav">
+        <a href="https://github.com/ashwindevx" target="_blank" rel="noopener noreferrer">github</a>
+        <a href="https://www.linkedin.com/in/ashwin-chauhan-81b137147/" target="_blank" rel="noopener noreferrer">linkedin</a>
+      </nav>
+    </footer>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    
+    function updateToggleText() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? 'light' : 'dark';
+    }
+    
+    updateToggleText();
+    
+    toggle.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateToggleText();
+    });
+  </script>
+</body>
+</html>
+

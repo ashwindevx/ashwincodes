@@ -1,0 +1,28 @@
+[
+  {
+    "year": "2025",
+    "items": [
+      {
+        "title": "dhurandar",
+        "type": "movie"
+      },
+      {
+        "title": "f1",
+        "type": "movie"
+      },
+      {
+        "title": "saiyaara",
+        "type": "movie"
+      },
+      {
+        "title": "the big short",
+        "type": "movie"
+      },
+      {
+        "title": "Sherlock Holmes (2009)",
+        "type": "movie",
+        "cover": "images/covers/sherlock_holmes_2009.webp"
+      }
+    ]
+  }
+]

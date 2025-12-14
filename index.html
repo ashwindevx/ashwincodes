@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ashwin Chauhan — Frontend engineer based in Bengaluru, India.">
+  <meta name="author" content="Ashwin Chauhan">
+  <title>Ashwin Chauhan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+  <script>
+    // Prevent flash: set theme before page renders
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-row">
+        <a href="/" class="site-title">ashwin chauhan</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">dark</button>
+      </div>
+      <nav class="nav">
+        <a href="#about">about</a>
+        <!-- <a href="#bookshelf">bookshelf</a> -->
+        <a href="#movies">movies</a>
+        <a href="#series">series</a>
+        <!-- <a href="writing.html">writing</a> -->
+      </nav>
+    </header>
+
+    <main>
+      <!-- ABOUT SECTION -->
+      <section class="section" id="about">
+        <h2 class="section-title">About</h2>
+        <div class="about-content">
+          <p>frontend engineer based in Bengaluru, India.</p>
+          <p>
+            currently i work at <a href="https://paywithatoa.co.uk/" target="_blank" rel="noopener noreferrer">Atoa</a>.
+          </p>
+          <p>
+            previously i worked at <a href="https://www.navgurukul.org/" target="_blank" rel="noopener noreferrer">NavGurukul</a>.
+          </p>
+        </div>
+      </section>
+
+      <!-- BOOKSHELF SECTION -->
+      <!-- <section class="section" id="bookshelf">
+        <h2 class="section-title">Bookshelf</h2>
+        <div id="bookshelf-content"></div>
+      </section> -->
+
+      <!-- MOVIES SECTION -->
+      <section class="section" id="movies">
+        <h2 class="section-title">Movies</h2>
+        <div id="movies-content"></div>
+      </section>
+
+      <!-- SERIES SECTION -->
+      <section class="section" id="series">
+        <h2 class="section-title">Series</h2>
+        <div id="series-content"></div>
+      </section>
+    </main>
+
+
+    <footer class="footer">
+      <nav class="footer-nav">
+        <a href="https://github.com/ashwindevx" target="_blank" rel="noopener noreferrer">github</a>
+        <a href="https://www.linkedin.com/in/ashwin-chauhan-81b137147/" target="_blank" rel="noopener noreferrer">linkedin</a>
+      </nav>
+    </footer>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    
+    function updateToggleText() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? 'light' : 'dark';
+    }
+    
+    updateToggleText();
+    
+    toggle.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateToggleText();
+    });
+
+    // TMDB API functions
+    const posterCache = {};
+    
+    async function searchTMDB(title, mediaType) {
+      const cacheKey = `${mediaType}:${title}`;
+      if (posterCache[cacheKey]) {
+        return posterCache[cacheKey];
+      }
+      
+      try {
+        const searchUrl = `${TMDB_CONFIG.baseUrl}/search/${mediaType}?api_key=${TMDB_CONFIG.apiKey}&query=${encodeURIComponent(title)}`;
+        const response = await fetch(searchUrl);
+        const data = await response.json();
+        
+        if (data.results && data.results.length > 0) {
+          const posterPath = data.results[0].poster_path;
+          if (posterPath) {
+            const posterUrl = `${TMDB_CONFIG.imageBaseUrl}${posterPath}`;
+            posterCache[cacheKey] = posterUrl;
+            return posterUrl;
+          }
+        }
+      } catch (error) {
+        console.error(`Error fetching poster for ${title}:`, error);
+      }
+      
+      return null;
+    }
+
+    // Media rendering with TMDB integration
+    async function renderMedia(type, containerId) {
+      try {
+        const response = await fetch(`data/${type}.json`);
+        const data = await response.json();
+        const container = document.getElementById(containerId);
+        
+        if (!data || data.length === 0) {
+          container.innerHTML = '<p class="empty-state">Nothing here yet...</p>';
+          return;
+        }
+        
+        // Render placeholder first
+        let html = '';
+        data.forEach(yearGroup => {
+          if (yearGroup.items.length === 0) return;
+          
+          html += `
+            <div class="year-group">
+              <h3 class="year">${yearGroup.year}</h3>
+              <ul class="items" id="${type}-${yearGroup.year}">
+          `;
+          
+          yearGroup.items.forEach((item, index) => {
+            const itemId = `${type}-${yearGroup.year}-${index}`;
+            // Default placeholder or manual cover if no API fetch happens yet
+            const initialCover = item.cover 
+              ? `<img src="${item.cover}" alt="${item.title}" class="item-cover" loading="lazy">` 
+              : `<div class="item-cover" style="background-color: var(--color-border);"></div>`;
+
+            html += `
+              <li class="item" id="${itemId}">
+                ${initialCover}
+                <span class="item-title">${item.title}</span>
+              </li>
+            `;
+          });
+          
+          html += `
+              </ul>
+            </div>
+          `;
+        });
+        
+        container.innerHTML = html;
+        
+        // Fetch posters asynchronously
+        for (const yearGroup of data) {
+          for (let i = 0; i < yearGroup.items.length; i++) {
+            const item = yearGroup.items[i];
+            const itemId = `${type}-${yearGroup.year}-${i}`;
+            const itemEl = document.getElementById(itemId);
+            
+            if (itemEl) {
+              const mediaType = item.type || (type === 'series' ? 'tv' : 'movie');
+              const posterUrl = await searchTMDB(item.title, mediaType);
+              
+              const finalPoster = posterUrl || item.cover;
+
+              if (finalPoster) {
+                const currentCover = itemEl.querySelector('.item-cover');
+                // Only replace if it's different or if we're enhancing a placeholder
+                if (currentCover.getAttribute('src') !== finalPoster) {
+                  const img = document.createElement('img');
+                  img.src = finalPoster;
+                  img.alt = item.title;
+                  img.className = 'item-cover';
+                  img.loading = 'lazy';
+                  currentCover.replaceWith(img);
+                }
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error(`Error loading ${type}:`, error);
+        document.getElementById(containerId).innerHTML = '<p class="empty-state">Failed to load content.</p>';
+      }
+    }
+    
+    // Load all media sections
+    renderMedia('bookshelf', 'bookshelf-content');
+    renderMedia('movies', 'movies-content');
+    renderMedia('series', 'series-content');
+  </script>
+</body>
+</html>
+

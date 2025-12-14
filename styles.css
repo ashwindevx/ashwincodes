@@ -1,0 +1,314 @@
+/*
+ * Design System
+ * Inspired by drewcoffman.com — clean, minimal, content-first
+ */
+
+/* ============================================
+   CSS Custom Properties
+   ============================================ */
+:root {
+  /* Colors */
+  --color-bg: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b6b6b;
+  --color-text-subtle: #999999;
+  --color-link: #1a1a1a;
+  --color-link-underline: #d4d4d4;
+  --color-link-hover: #000000;
+  --color-border: #e5e5e5;
+
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-base: 16px;
+  --font-size-sm: 14px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --line-height: 1.6;
+  --line-height-tight: 1.4;
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+
+  /* Layout */
+  --max-width: 1152px;
+  --container-padding: 1.5rem;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+  --color-bg: #0a0a0a;
+  --color-text: #e5e5e5;
+  --color-text-muted: #a3a3a3;
+  --color-text-subtle: #737373;
+  --color-link: #e5e5e5;
+  --color-link-underline: #404040;
+  --color-link-hover: #ffffff;
+  --color-border: #262626;
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-size-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+body {
+  font-family: var(--font-family);
+  line-height: var(--line-height);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+::selection {
+  background-color: #47a3f3;
+  color: #ffffff;
+}
+
+/* ============================================
+   Layout
+   ============================================ */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--container-padding);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.header {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.site-title {
+  display: block;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text);
+  text-decoration: none;
+  margin-bottom: var(--spacing-md);
+}
+
+.site-title:hover {
+  color: var(--color-link-hover);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.nav a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  transition: color 0.15s ease;
+}
+
+.nav a:hover {
+  color: var(--color-text);
+}
+
+/* ============================================
+   Sections
+   ============================================ */
+.section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.section-title {
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+  text-transform: lowercase;
+}
+
+/* ============================================
+   About Section
+   ============================================ */
+.about-content p {
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-sm);
+}
+
+.about-content p:last-child {
+  margin-bottom: 0;
+}
+
+.about-content a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-color: var(--color-link-underline);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.about-content a:hover {
+  text-decoration-color: var(--color-text);
+}
+
+/* ============================================
+   Year Groups (Bookshelf, Movies, Series)
+   ============================================ */
+.year-group {
+  margin-bottom: var(--spacing-xl);
+}
+
+.year-group:last-child {
+  margin-bottom: 0;
+}
+
+.year {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-subtle);
+  margin-bottom: var(--spacing-md);
+}
+
+.items {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.item-cover {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  border-radius: 4px;
+  background-color: var(--color-border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.item-cover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.item-title {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-tight);
+  text-align: left;
+}
+
+
+/* ============================================
+   Footer
+   ============================================ */
+.footer {
+  margin-top: var(--spacing-2xl);
+  padding-top: var(--spacing-lg);
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.footer-nav a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-color: var(--color-link-underline);
+  text-underline-offset: 3px;
+  font-size: var(--font-size-sm);
+  transition: text-decoration-color 0.15s ease;
+}
+
+.footer-nav a:hover {
+  text-decoration-color: var(--color-text);
+}
+
+/* ============================================
+   Writing Page Specific
+   ============================================ */
+.empty-state {
+  color: var(--color-text-subtle);
+  font-style: italic;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 480px) {
+  :root {
+    --font-size-base: 15px;
+    --container-padding: 1rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+  }
+
+  .nav {
+    gap: var(--spacing-xs);
+  }
+}
+
+/* ============================================
+   Theme Toggle
+   ============================================ */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+}
+
+.header-row .site-title {
+  margin-bottom: 0;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--color-text);
+}
+
