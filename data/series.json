@@ -4,23 +4,38 @@
     "items": [
       {
         "title": "game of thrones",
-        "type": "tv"
+        "type": "tv",
+        "seasons": "all"
       },
       {
         "title": "breaking bad",
-        "type": "tv"
+        "type": "tv",
+        "seasons": "all"
       },
       {
         "title": "hitler and the nazis evil on trial",
-        "type": "tv"
+        "type": "tv",
+        "seasons": "all"
       },
       {
         "title": "a knight of the seven kingdoms",
-        "type": "tv"
+        "type": "tv",
+        "seasons": "all"
       },
       {
         "title": "jeffrey epstein filthy rich",
-        "type": "tv"
+        "type": "tv",
+        "seasons": "all"
+      },
+      {
+        "title": "house of the dragon",
+        "type": "tv",
+        "seasons": "all"
+      },
+      {
+        "title": "narcos",
+        "type": "tv",
+        "seasons": [1, 2]
       }
     ]
   },
@@ -29,19 +44,23 @@
     "items": [
       {
         "title": "from",
-        "type": "tv"
+        "type": "tv",
+        "seasons": "all"
       },
       {
         "title": "stranger things",
-        "type": "tv"
+        "type": "tv",
+        "seasons": "all"
       },
       {
         "title": "sean combs the reckoning",
-        "type": "tv"
+        "type": "tv",
+        "seasons": "all"
       },
       {
         "title": "succession",
-        "type": "tv"
+        "type": "tv",
+        "seasons": [1]
       }
     ]
   }

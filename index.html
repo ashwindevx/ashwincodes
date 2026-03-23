@@ -31,9 +31,6 @@
       </div>
       <nav class="nav">
         <a href="#about">about</a>
-        <!-- <a href="#bookshelf">bookshelf</a> -->
-        <a href="#movies">movies</a>
-        <a href="#series">series</a>
         <!-- <a href="writing.html">writing</a> -->
       </nav>
     </header>
@@ -53,22 +50,16 @@
         </div>
       </section>
 
-      <!-- BOOKSHELF SECTION -->
-      <!-- <section class="section" id="bookshelf">
-        <h2 class="section-title">Bookshelf</h2>
-        <div id="bookshelf-content"></div>
-      </section> -->
-
-      <!-- MOVIES SECTION -->
-      <section class="section" id="movies">
-        <h2 class="section-title">Movies</h2>
-        <div id="movies-content"></div>
-      </section>
-
-      <!-- SERIES SECTION -->
-      <section class="section" id="series">
-        <h2 class="section-title">Series</h2>
-        <div id="series-content"></div>
+      <!-- MEDIA TABS -->
+      <section class="section" id="media">
+        <div class="tabs">
+          <button class="tab active" data-tab="bookshelf">bookshelf</button>
+          <button class="tab" data-tab="series">shows</button>
+          <button class="tab" data-tab="movies">movies</button>
+        </div>
+        <div class="tab-panel active" id="bookshelf-content"></div>
+        <div class="tab-panel" id="movies-content"></div>
+        <div class="tab-panel" id="series-content"></div>
       </section>
     </main>
 
@@ -112,7 +103,7 @@
       if (posterCache[cacheKey]) {
         return posterCache[cacheKey];
       }
-      
+
       try {
         const searchUrl = `${TMDB_CONFIG.baseUrl}/search/${mediaType}?api_key=${TMDB_CONFIG.apiKey}&query=${encodeURIComponent(title)}`;
         const response = await fetch(searchUrl);
@@ -130,6 +121,36 @@
         console.error(`Error fetching poster for ${title}:`, error);
       }
       
+      return null;
+    }
+
+    async function searchOpenLibrary(title) {
+      const cacheKey = `book:${title}`;
+      if (posterCache[cacheKey]) {
+        return posterCache[cacheKey];
+      }
+
+      try {
+        const searchUrl = `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&fields=title,author_name,cover_i&limit=1`;
+        const response = await fetch(searchUrl);
+        const data = await response.json();
+
+        if (data.docs && data.docs.length > 0) {
+          const book = data.docs[0];
+          const result = {};
+          if (book.cover_i) {
+            result.cover = `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`;
+          }
+          if (book.author_name && book.author_name.length > 0) {
+            result.author = book.author_name[0];
+          }
+          posterCache[cacheKey] = result;
+          return result;
+        }
+      } catch (error) {
+        console.error(`Error fetching book info for ${title}:`, error);
+      }
+
       return null;
     }
 
@@ -163,10 +184,20 @@
               ? `<img src="${item.cover}" alt="${item.title}" class="item-cover" loading="lazy">` 
               : `<div class="item-cover" style="background-color: var(--color-border);"></div>`;
 
+            const seasonTag = item.seasons
+              ? `<span class="item-seasons">${item.seasons === 'all' ? 'all seasons' : 'seasons: ' + item.seasons.join(', ')}</span>`
+              : '';
+
+            const authorTag = item.author
+              ? `<span class="item-author">${item.author}</span>`
+              : '';
+
             html += `
               <li class="item" id="${itemId}">
                 ${initialCover}
                 <span class="item-title">${item.title}</span>
+                ${seasonTag}
+                ${authorTag}
               </li>
             `;
           });
@@ -187,21 +218,44 @@
             const itemEl = document.getElementById(itemId);
             
             if (itemEl) {
-              const mediaType = item.type || (type === 'series' ? 'tv' : 'movie');
-              const posterUrl = await searchTMDB(item.title, mediaType);
-              
-              const finalPoster = posterUrl || item.cover;
+              if (item.type === 'book') {
+                const bookInfo = await searchOpenLibrary(item.title);
+                const finalPoster = bookInfo && bookInfo.cover;
 
-              if (finalPoster) {
-                const currentCover = itemEl.querySelector('.item-cover');
-                // Only replace if it's different or if we're enhancing a placeholder
-                if (currentCover.getAttribute('src') !== finalPoster) {
-                  const img = document.createElement('img');
-                  img.src = finalPoster;
-                  img.alt = item.title;
-                  img.className = 'item-cover';
-                  img.loading = 'lazy';
-                  currentCover.replaceWith(img);
+                if (finalPoster) {
+                  const currentCover = itemEl.querySelector('.item-cover');
+                  if (currentCover.getAttribute('src') !== finalPoster) {
+                    const img = document.createElement('img');
+                    img.src = finalPoster;
+                    img.alt = item.title;
+                    img.className = 'item-cover';
+                    img.loading = 'lazy';
+                    currentCover.replaceWith(img);
+                  }
+                }
+
+                if (bookInfo && bookInfo.author && !itemEl.querySelector('.item-author')) {
+                  const authorSpan = document.createElement('span');
+                  authorSpan.className = 'item-author';
+                  authorSpan.textContent = bookInfo.author;
+                  itemEl.appendChild(authorSpan);
+                }
+              } else {
+                const mediaType = item.type || (type === 'series' ? 'tv' : 'movie');
+                const posterUrl = await searchTMDB(item.title, mediaType);
+
+                const finalPoster = posterUrl || item.cover;
+
+                if (finalPoster) {
+                  const currentCover = itemEl.querySelector('.item-cover');
+                  if (currentCover.getAttribute('src') !== finalPoster) {
+                    const img = document.createElement('img');
+                    img.src = finalPoster;
+                    img.alt = item.title;
+                    img.className = 'item-cover';
+                    img.loading = 'lazy';
+                    currentCover.replaceWith(img);
+                  }
                 }
               }
             }
@@ -213,6 +267,16 @@
       }
     }
     
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(`${tab.dataset.tab}-content`).classList.add('active');
+      });
+    });
+
     // Load all media sections
     renderMedia('bookshelf', 'bookshelf-content');
     renderMedia('movies', 'movies-content');
