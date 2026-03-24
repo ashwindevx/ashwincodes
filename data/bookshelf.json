@@ -5,6 +5,11 @@
       {
         "title": "a game of thrones",
         "type": "book"
+      },
+      {
+        "title": "white nights",
+        "type": "book",
+        "olid": "OL49273234M"
       }
     ]
   }

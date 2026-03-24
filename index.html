@@ -30,7 +30,6 @@
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">dark</button>
       </div>
       <nav class="nav">
-        <a href="#about">about</a>
         <!-- <a href="writing.html">writing</a> -->
       </nav>
     </header>
@@ -38,8 +37,7 @@
     <main>
       <!-- ABOUT SECTION -->
       <section class="section" id="about">
-        <h2 class="section-title">About</h2>
-        <div class="about-content">
+<div class="about-content">
           <p>frontend engineer based in Bengaluru, India.</p>
           <p>
             currently i work at <a href="https://paywithatoa.co.uk/" target="_blank" rel="noopener noreferrer">Atoa</a>.
@@ -124,13 +122,30 @@
       return null;
     }
 
-    async function searchOpenLibrary(title) {
-      const cacheKey = `book:${title}`;
+    async function searchOpenLibrary(title, olid) {
+      const cacheKey = `book:${olid || title}`;
       if (posterCache[cacheKey]) {
         return posterCache[cacheKey];
       }
 
       try {
+        if (olid) {
+          const editionUrl = `https://openlibrary.org/books/${olid}.json`;
+          const editionRes = await fetch(editionUrl);
+          const edition = await editionRes.json();
+          const result = {};
+          if (edition.covers && edition.covers.length > 0 && edition.covers[0] > 0) {
+            result.cover = `https://covers.openlibrary.org/b/id/${edition.covers[0]}-L.jpg`;
+          }
+          if (edition.authors && edition.authors.length > 0) {
+            const authorRes = await fetch(`https://openlibrary.org${edition.authors[0].key}.json`);
+            const author = await authorRes.json();
+            result.author = author.name;
+          }
+          posterCache[cacheKey] = result;
+          return result;
+        }
+
         const searchUrl = `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&fields=title,author_name,cover_i&limit=1`;
         const response = await fetch(searchUrl);
         const data = await response.json();
@@ -219,7 +234,7 @@
             
             if (itemEl) {
               if (item.type === 'book') {
-                const bookInfo = await searchOpenLibrary(item.title);
+                const bookInfo = await searchOpenLibrary(item.title, item.olid);
                 const finalPoster = bookInfo && bookInfo.cover;
 
                 if (finalPoster) {
