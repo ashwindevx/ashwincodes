@@ -195,6 +195,20 @@ main {
   display: block;
 }
 
+/* Margins link - next to toggle */
+.margins-name-link,
+.margins-name-link:visited {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.margins-name-link:hover {
+  color: var(--color-text);
+}
+
 /* ============================================
    About Section
    ============================================ */
@@ -352,6 +366,12 @@ main {
 
 .header-row .site-title {
   margin-bottom: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
 }
 
 .theme-toggle {
