@@ -3,13 +3,18 @@
     "year": "2026",
     "items": [
       {
-        "title": "a game of thrones",
-        "type": "book"
+        "title": "Red Rising",
+        "type": "book",
+        "olid": "OL26758016M"
       },
       {
         "title": "white nights",
         "type": "book",
         "olid": "OL49273234M"
+      },
+      {
+        "title": "a game of thrones",
+        "type": "book"
       }
     ]
   }
