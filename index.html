@@ -186,7 +186,7 @@
               : `<div class="item-cover" style="background-color: var(--color-border);"></div>`;
 
             const seasonTag = item.seasons
-              ? `<span class="item-seasons">${item.seasons === 'all' ? 'all seasons' : 'seasons: ' + item.seasons.join(', ')}</span>`
+              ? `<span class="item-seasons">${item.seasons === 'all' ? 'all seasons' : 'seasons: ' + item.seasons.join(', ')}${item.episode ? ' (' + item.episode + ')' : ''}</span>`
               : '';
 
             const authorTag = item.author

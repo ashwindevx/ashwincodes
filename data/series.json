@@ -30,7 +30,8 @@
       {
         "title": "house of the dragon",
         "type": "tv",
-        "seasons": "all"
+        "seasons": [1, 2, 3],
+        "episode": "s3e2"
       },
       {
         "title": "narcos",

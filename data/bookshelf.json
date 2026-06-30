@@ -3,6 +3,10 @@
     "year": "2026",
     "items": [
       {
+        "title": "tuesday's with morrie",
+        "type": "book"
+      },
+      {
         "title": "Red Rising",
         "type": "book",
         "olid": "OL26758016M"
