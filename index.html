@@ -46,10 +46,12 @@
           <button class="tab active" data-tab="bookshelf">bookshelf</button>
           <button class="tab" data-tab="series">shows</button>
           <button class="tab" data-tab="movies">movies</button>
+          <button class="tab" data-tab="blog">blog</button>
         </div>
         <div class="tab-panel active" id="bookshelf-content"></div>
         <div class="tab-panel" id="movies-content"></div>
         <div class="tab-panel" id="series-content"></div>
+        <div class="tab-panel" id="blog-content"></div>
       </section>
     </main>
 
@@ -193,10 +195,14 @@
               ? `<span class="item-author">${item.author}</span>`
               : '';
 
+            const partialMark = item.partial
+              ? `<span class="item-partial" title="read more than 50%, not finished">*</span>`
+              : '';
+
             html += `
               <li class="item" id="${itemId}">
                 ${initialCover}
-                <span class="item-title">${item.title}</span>
+                <span class="item-title">${item.title}${partialMark}</span>
                 ${seasonTag}
                 ${authorTag}
               </li>
@@ -208,7 +214,12 @@
             </div>
           `;
         });
-        
+
+        const hasPartial = data.some(yearGroup => yearGroup.items.some(item => item.partial));
+        if (hasPartial) {
+          html += `<p class="legend">* read more than 50%, not finished</p>`;
+        }
+
         container.innerHTML = html;
         
         // Fetch posters asynchronously
@@ -278,10 +289,62 @@
       });
     });
 
+    // Blog rendering (posts grouped by year, newest first)
+    async function renderBlog(containerId) {
+      const container = document.getElementById(containerId);
+      try {
+        const response = await fetch('data/blog.json');
+        const data = await response.json();
+
+        if (!data || data.length === 0) {
+          container.innerHTML = '<p class="empty-state">Nothing here yet...</p>';
+          return;
+        }
+
+        let html = '';
+        data.forEach(yearGroup => {
+          if (!yearGroup.items || yearGroup.items.length === 0) return;
+
+          html += `
+            <div class="year-group">
+              <h3 class="year">${yearGroup.year}</h3>
+              <ul class="blog-list">
+          `;
+
+          yearGroup.items.forEach(post => {
+            const dateTag = post.date
+              ? `<span class="blog-date">${post.date}</span>`
+              : '';
+            const titleEl = post.url
+              ? `<a href="${post.url}" class="blog-link">${post.title}</a>`
+              : `<span class="blog-link">${post.title}</span>`;
+
+            html += `
+              <li class="blog-item">
+                ${titleEl}
+                ${dateTag}
+              </li>
+            `;
+          });
+
+          html += `
+              </ul>
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+      } catch (error) {
+        console.error('Error loading blog:', error);
+        container.innerHTML = '<p class="empty-state">Failed to load content.</p>';
+      }
+    }
+
     // Load all media sections
     renderMedia('bookshelf', 'bookshelf-content');
     renderMedia('movies', 'movies-content');
     renderMedia('series', 'series-content');
+    renderBlog('blog-content');
   </script>
 </body>
 </html>
