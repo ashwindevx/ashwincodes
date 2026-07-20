@@ -7,14 +7,16 @@
         "type": "book"
       },
       {
-        "title": "Red Rising",
+        "title": "red rising",
         "type": "book",
-        "olid": "OL26758016M"
+        "olid": "OL26758016M",
+        "author": "pierce brown"
       },
       {
-        "title": "Project Hail Mary",
+        "title": "project hail mary",
         "type": "book",
-        "olid": "OL32553390M"
+        "olid": "OL32553390M",
+        "author": "andy weir"
       },
       {
         "title": "white nights",
