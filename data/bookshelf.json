@@ -16,7 +16,8 @@
         "title": "project hail mary",
         "type": "book",
         "olid": "OL32553390M",
-        "author": "andy weir"
+        "author": "andy weir",
+        "partial": true
       },
       {
         "title": "white nights",
