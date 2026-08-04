@@ -3,6 +3,12 @@
     "year": "2026",
     "items": [
       {
+        "title": "golden son",
+        "type": "book",
+        "olid": "OL26798371M",
+        "author": "pierce brown"
+      },
+      {
         "title": "tuesday's with morrie",
         "type": "book"
       },
