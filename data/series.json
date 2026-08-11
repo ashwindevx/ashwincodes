@@ -3,22 +3,12 @@
     "year": "2026",
     "items": [
       {
-        "title": "game of thrones",
+        "title": "house of the dragon",
         "type": "tv",
-        "seasons": "all"
-      },
-      {
-        "title": "breaking bad",
-        "type": "tv",
-        "seasons": "all"
+        "seasons": [1, 2, 3]
       },
       {
         "title": "hitler and the nazis evil on trial",
-        "type": "tv",
-        "seasons": "all"
-      },
-      {
-        "title": "a knight of the seven kingdoms",
         "type": "tv",
         "seasons": "all"
       },
@@ -28,15 +18,24 @@
         "seasons": "all"
       },
       {
-        "title": "house of the dragon",
-        "type": "tv",
-        "seasons": [1, 2, 3],
-        "episode": "s3e2"
-      },
-      {
         "title": "narcos",
         "type": "tv",
         "seasons": [1, 2]
+      },
+      {
+        "title": "a knight of the seven kingdoms",
+        "type": "tv",
+        "seasons": "all"
+      },
+      {
+        "title": "breaking bad",
+        "type": "tv",
+        "seasons": "all"
+      },
+      {
+        "title": "game of thrones",
+        "type": "tv",
+        "seasons": "all"
       }
     ]
   },
