@@ -59,6 +59,12 @@
   </div>
 
   <script>
+    function trackEvent(name, data) {
+      if (window.umami && typeof window.umami.track === 'function') {
+        window.umami.track(name, data);
+      }
+    }
+
     const toggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
     
@@ -79,6 +85,7 @@
         localStorage.setItem('theme', 'dark');
       }
       updateToggleText();
+      trackEvent('theme_toggle', { theme: html.getAttribute('data-theme') || 'light' });
     });
 
     // TMDB API functions
@@ -286,7 +293,18 @@
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
         document.getElementById(`${tab.dataset.tab}-content`).classList.add('active');
+        trackEvent('section_view', { section: tab.dataset.tab });
       });
+    });
+
+    document.querySelectorAll('a[target="_blank"]').forEach(link => {
+        link.addEventListener('click', () => {
+          trackEvent('outbound_link', { destination: link.hostname });
+        });
+    });
+
+    window.addEventListener('load', () => {
+        trackEvent('section_view', { section: 'bookshelf' });
     });
 
     // Blog rendering (posts grouped by year, newest first)
@@ -348,4 +366,3 @@
   </script>
 </body>
 </html>
-

@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="02700562-0c10-4f61-99a6-24938148c8a9"></script>
   <script>
     // Prevent flash: set theme before page renders
     (function() {
@@ -64,6 +65,12 @@
   </div>
 
   <script>
+    function trackEvent(name, data) {
+      if (window.umami && typeof window.umami.track === 'function') {
+        window.umami.track(name, data);
+      }
+    }
+
     const toggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
     
@@ -84,8 +91,14 @@
         localStorage.setItem('theme', 'dark');
       }
       updateToggleText();
+      trackEvent('theme_toggle', { theme: html.getAttribute('data-theme') || 'light' });
+    });
+
+    document.querySelectorAll('a[target="_blank"]').forEach(link => {
+      link.addEventListener('click', () => {
+        trackEvent('outbound_link', { destination: link.hostname });
+      });
     });
   </script>
 </body>
 </html>
-
